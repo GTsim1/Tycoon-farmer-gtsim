@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tycoon Farmer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-black: #000000;
+            --dark-charcoal: #080808;
+            --neon-green: #00FF00;
+            --dark-gray: #1A1A1A;
+            --medium-gray: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-black);
+            color: white;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 0, 0.03) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 255, 0, 0.03) 0%, transparent 20%),
+                repeating-linear-gradient(
+                    45deg,
+                    rgba(0, 255, 0, 0.02) 0px,
+                    rgba(0, 255, 0, 0.02) 1px,
+                    transparent 1px,
+                    transparent 11px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    rgba(0, 255, 0, 0.02) 0px,
+                    rgba(0, 255, 0, 0.02) 1px,
+                    transparent 1px,
+                    transparent 11px
+                );
+            background-size: cover;
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Teko', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        h1 {
+            font-size: 6rem;
+            text-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            line-height: 0.9;
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 3rem;
+            text-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--neon-green);
+        }
+        
+        p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            border-bottom: 1px solid var(--neon-green);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+        
+        .logo-square {
+            width: 30px;
+            height: 30px;
+            background-color: var(--neon-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--deep-black);
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            position: relative;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        nav a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0%;
+            height: 2px;
+            background: var(--neon-green);
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-green), transparent);
+            box-shadow: 0 0 10px var(--neon-green);
+            margin: 0 auto 40px;
+            width: 90%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .version-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--neon-green);
+            color: var(--deep-black);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+        
+        .hero-subheading {
+            max-width: 700px;
+            margin: 0 auto 40px;
+            font-size: 1.4rem;
+        }
+        
+        .cta-button {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-family: 'Teko', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--neon-green);
+            color: var(--deep-black);
+            font-weight: bold;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 20px var(--neon-green);
+            transform: translateY(-3px);
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 80px 20px;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(26, 26, 26, 0.7);
+            border: 1px solid var(--dark-gray);
+            border-radius: 8px;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature-card:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .feature-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--neon-green);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: var(--deep-black);
+            font-size: 1.5rem;
+        }
+        
+        /* Installation Guide */
+        .installation {
+            padding: 80px 20px;
+            background: rgba(8, 8, 8, 0.7);
+        }
+        
+        .steps {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .step {
+            background: rgba(26, 26, 26, 0.7);
+            border: 1px solid var(--dark-gray);
+            border-radius: 8px;
+            padding: 25px 30px 25px 70px;
+            margin-bottom: 20px;
+            position: relative;
+            backdrop-filter: blur(5px);
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-black);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .video-container {
+            margin-top: 40px;
+            text-align: center;
+        }
+        
+        .video-container iframe {
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            border: 2px solid var(--neon-green);
+            border-radius: 8px;
+        }
+        
+        /* Item Database */
+        .database {
+            padding: 80px 20px;
+        }
+        
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            background: rgba(26, 26, 26, 0.7);
+            border: 1px solid var(--dark-gray);
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neon-green);
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .filter-btn {
+            padding: 10px 25px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Teko', sans-serif;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--neon-green);
+            color: var(--deep-black);
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .item-card {
+            background: rgba(26, 26, 26, 0.7);
+            border: 1px solid var(--dark-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        
+        .item-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .item-info {
+            padding: 20px;
+        }
+        
+        .item-name {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .rarity {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .common { background: #666; }
+        .uncommon { background: #00cc00; }
+        .rare { background: #0066cc; }
+        .epic { background: #cc00cc; }
+        .legendary { background: #ff9900; }
+        
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            border-top: 1px solid var(--dark-gray);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .copyright {
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            color: var(--neon-green);
+        }
+        
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--neon-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--deep-black);
+            font-size: 1.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 100;
+        }
+        
+        .scroll-indicator:hover {
+            opacity: 1;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 4rem;
+            }
+            
+            h2 {
+                font-size: 2.5rem;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+            
+            nav {
+                display: flex;
+                gap: 20px;
+            }
+            
+            nav a {
+                margin: 0;
+                font-size: 1rem;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .video-container iframe {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="logo">
+            <div class="logo-square">TF</div>
+            <div>TYCOON<span style="color: var(--neon-green);">FARMER</span></div>
+        </div>
+        <nav>
+            <a href="#">HOME</a>
+            <a href="#database">ITEMS</a>
+        </nav>
+    </header>
+    <div class="divider"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="version-badge">v1.0.0 AVAILABLE NOW</div>
+        <h1>TYCOON<br>FARMER</h1>
+        <p class="hero-subheading">Build your empire from a single seed. Automate, expand, and dominate the market in the most immersive Minecraft Tycoon experience ever created.</p>
+        <div class="cta-button">
+            <button class="btn btn-primary">DOWNLOAD MAP <span>⬇</span></button>
+        </div>
+    </section>
+    
+    <!-- Game Features -->
+    <section class="features">
+        <div class="container">
+            <h2>GAME FEATURES</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚙</div>
+                    <h3>AUTOMATED MACHINES</h3>
+                    <p>Build complex factories with auto-harvesters, conveyor belts, and sorting systems. No mods required.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">$</div>
+                    <h3>DYNAMIC ECONOMY</h3>
+                    <p>Market prices fluctuate based on supply and demand. Sell high, buy low.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>CUSTOM ENERGY</h3>
+                    <p>Manage power grids with solar panels, coal generators, and nuclear reactors.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>EXPANSIVE WORLD</h3>
+                    <p>Unlock 5 unique biomes, each with exclusive crops and hidden secrets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Installation Guide -->
+    <section class="installation">
+        <div class="container">
+            <h2>INSTALLATION GUIDE</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>
+                        <h3>Download the map</h3>
+                        <p>Get the .zip file from the download button above.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>
+                        <h3>Extract the folder</h3>
+                        <p>Place the folder into your .minecraft/saves directory.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>
+                        <h3>Launch Minecraft</h3>
+                        <p>Open Minecraft version 1.20.4 or later.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>
+                        <h3>Select the world</h3>
+                        <p>Choose "Tycoon Farmer" from your singleplayer worlds.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div>
+                        <h3>Enjoy your empire</h3>
+                        <p>Start building your farming empire today!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="video-container">
+                <h3>WATCH THE TUTORIAL</h3>
+                <iframe 
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
+                    title="Tycoon Farmer Tutorial" 
+                    frameborder="0" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Item Database -->
+    <section class="database" id="database">
+        <div class="container">
+            <h2>ITEM DATABASE</h2>
+            <div class="search-bar">
+                <i>🔍</i>
+                <input type="text" placeholder="Search items...">
+            </div>
+            <div class="filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Tool</button>
+                <button class="filter-btn">Machine</button>
+                <button class="filter-btn">Crop</button>
+                <button class="filter-btn">Consumable</button>
+                <button class="filter-btn">Weapon</button>
+            </div>
+            <div class="items-grid">
+                <div class="item-card">
+                    <div class="item-image" style="background: linear-gradient(45deg, #000, #333);"></div>
+                    <div class="item-info">
+                        <h3 class="item-name">VOID HOE</h3>
+                        <span class="rarity epic">EPIC</span>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-image" style="background: linear-gradient(45deg, #ff6600, #ffcc00);"></div>
+                    <div class="item-info">
+                        <h3 class="item-name">AUTO-HARVESTER 3000</h3>
+                        <span class="rarity legendary">LEGENDARY</span>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-image" style="background: url('https://images.unsplash.com/photo-1597362923152-6e6315f8efbc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80');"></div>
+                    <div class="item-info">
+                        <h3 class="item-name">EMERALD CORN</h3>
+                        <span class="rarity uncommon">UNCOMMON</span>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-image" style="background: linear-gradient(45deg, #0066cc, #00ccff);"></div>
+                    <div class="item-info">
+                        <h3 class="item-name">QUANTUM FERTILIZER</h3>
+                        <span class="rarity rare">RARE</span>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-image" style="background: linear-gradient(45deg, #333, #000);"></div>
+                    <div class="item-info">
+                        <h3 class="item-name">OBSIDIAN SCYTHE</h3>
+                        <span class="rarity common">COMMON</span>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <div class="item-image" style="background: linear-gradient(45deg, #9900cc, #ff00cc);"></div>
+                    <div class="item-info">
+                        <h3 class="item-name">DIAMOND SPRINKLER</h3>
+                        <span class="rarity rare">RARE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div>
+            <div class="logo">
+                <div class="logo-square">TF</div>
+                <div>TYCOON<span style="color: var(--neon-green);">FARMER</span></div>
+            </div>
+            <p class="copyright">© 2025 Minecraft Custom Maps. Not affiliated with Mojang AB.</p>
+        </div>
+        <div class="social-icons">
+           
+        </div>
+    </footer>
+    
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+        ↑
+    </div>
+    
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Update active link on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if(pageYOffset >= (sectionTop - 100)) {
+                    current = section.getAttribute('id') || section.getAttribute('class');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if(link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
